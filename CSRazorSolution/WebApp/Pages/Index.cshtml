@@ -7,6 +7,7 @@
 <div>
     <h1>Welcome to Razor Pages in CPSC-1517</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
     <br /><br />
 
     @if(string.IsNullOrWhiteSpace(Model.MyName))
@@ -16,5 +17,20 @@
     else
     {
         <p style= "font-weight: bold; color: forestgreen;">@Model.MyName</p>
+    }
+
+    <br /><br />
+
+    @if (Model.buildVersionInfo == null)
+    {
+        <p style="font-weight: bold;">Build Version Unknown</p>
+    }
+    else
+    {
+        <p>Database Version: @Model.buildVersionInfo.Major .
+                             @Model.buildVersionInfo.Minor .
+                             @Model.buildVersionInfo.Build 
+            was released on  @Model.buildVersionInfo.ReleaseDate.ToShortDateString();
+        </p>
     }
 </div>
