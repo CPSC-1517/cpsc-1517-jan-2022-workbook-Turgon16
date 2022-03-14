@@ -11,7 +11,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace WestWindSystem.Entities
 {
-    [Table("Build Version")]
+    [Table("BuildVersion")]
     public class BuildVersion
     {
         [Key]
