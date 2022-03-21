@@ -30,33 +30,84 @@ namespace WebApp.Pages.Samples
         // this is a two way binding out and in
         // data is move out and in FOr You Automatically
 
-        [BindProperty]
+        [BindProperty(SupportsGet = true)]
         public int regionid { get; set; }
 
         public Region regionInfo { get; set; }
 
-        public void OnGet()
-        {  
-        }
 
-        public void OnPost()
+        // the List<T> has a null value as the page is created
+        // Yyou can initialize the property to an instance as the page is being created by adding = new() to your declaration.
+        // if yo;u do
+        [BindProperty]
+        public List<Region> regionsList { get; set; } = new();
+
+        [BindProperty]
+        public int selectRegion { get; set; }
+
+
+        public void OnGet()
         {
+            //since the internet is a stateless environment, you need to obtain any list data that is required by; your controls or local logic on EVERY instance of the page being processed.
+            PopulateList();
+
             if (regionid > 0)
             {
                 regionInfo = _regionServices.Region_GetById(regionid);
                 if (regionInfo == null)
                 {
-                    FeedbackMessage = "Region id is not valid. No such region on file.";
+                    FeedbackMessage = "Region id is not valid. No such region on file";
                 }
                 else
                 {
                     FeedbackMessage = $"ID: {regionInfo.RegionID} Description: {regionInfo.RegionDescription}";
                 }
             }
-            else
+        }
+
+        private void PopulateList()
+        {
+            // this method will obtain the data for any require list to be used in populating controls or for local logic
+            regionsList = _regionServices.Region_List();
+
+        }
+
+        // generic falling post handler
+        public void OnPost()
+        {
+            FeedbackMessage = "WARNING!!! No OnPost page handler found. Execution default to the coded OnPost().";
+        }
+
+        // specific post method to use in conjunction with asp-page-handler="xxx"
+        public IActionResult OnPostFetch()
+        {
+            if (regionid < 1)
             {
                 FeedbackMessage = "Required: Region id is a non-zero positive whole number.";
             }
+            //the receiving "regionid" is the routing parameter
+            //the sending "regionid" is a BindProperty field
+            return RedirectToPage(new { regionid = regionid });
+        }
+
+        public IActionResult OnPostSelect()
+        {
+            if (selectRegion < 1)
+            {
+                FeedbackMessage = "Required: Select a region to view.";
+            }
+            //the receiving "regionid" is the routing parameter
+            //the sending "regionid" is a BindProperty field
+            return RedirectToPage(new { regionid = selectRegion });
+        }
+
+        // specific post method to use in conjunction with asp-page-handler="xxx"
+        public IActionResult OnPostClear()
+        {
+            FeedbackMessage = "";
+            //regionid = 0;
+            ModelState.Clear();
+            return RedirectToPage(new { regionid = (int?)null });
         }
     }
 }
