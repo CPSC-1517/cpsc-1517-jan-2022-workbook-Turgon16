@@ -40,7 +40,23 @@
                     @foreach (var item in Model.TerritoryInfo)
                     {
                         <tr>
-                            <td>@item.TerritoryID</td>
+                            <td>
+                                @*
+                                    this example will send the TerritoryID to another page. 
+                                    Use the anchor tag to accomplish this task. 
+                                    The href page value MUST be reference from the Page folder.
+                                    The value to the passed is attached to the end of the page reference
+                                    in this example, the value will be passed to the receiving page
+                                    as a routing parameter.
+                                    You CAN send multiple values to the new page.
+                                    Page reference syntax: /pathname/value[/value/...]
+                                    The text of your anchor tag DOES NOT need to be the value that
+                                    is being passed.
+                                *@
+                                <a href="/Samples/ReceivingPage/@item.TerritoryID">
+                                    Passing this value: @item.TerritoryID
+                                    </a>
+                                </td>
                             <td>@item.TerritoryDescription</td>
                             <td><select disabled="true">
                                     @foreach (var region in Model.RegionList)
@@ -59,7 +75,43 @@
                     }
                 </tbody>
                 <tfoot>
-                    @*used for the summary table information eg. totals*@
+                    @*used for the summary table information eg. totals
+                        used for displaying paging information
+                    *@
+                    <tr>
+                        <td colspan="3">
+                            @{
+                                //the pageRef is the string representation of the value to be displayed AND
+                                // it's numeric
+                                //The string may be a character line : Next
+                                // or the string may be a numeric : 4
+                                //First Previous 1 2 3 4 5 Next Last 
+
+                                foreach(var pageRef in Model.Pager)
+                                {
+                                    if (pageRef == Model.Pager.CurrentPage)
+                                    {
+                                        <b>@pageRef.Text</b>
+                                    }
+                                    else
+                                    {
+                                        //create an anchor tag to move to the desired collection page.
+                                        //the target of the anchor destination is your current web cshtml
+                                        //this will cause an OnGet issue
+                                        // .Page is the numeric representation of the desired page
+                                        //for the asp-page your page name reference MUST be based from
+                                        //the folder name Pages
+                                        <a title="Page @pageRef.Page" 
+                                        asp-page="/Samples/PartialFilterSearch" 
+                                        asp-route-currentPage="@pageRef.Page">
+                                        @pageRef.Text
+                                        </a>
+                                    }
+                                }
+
+                            }
+                        </td>
+                    </tr>
                 </tfoot>
             </table>
         }
