@@ -9,13 +9,14 @@ using WestWindSystem.DAL;
 using WestWindSystem.Entities;
 #endregion
 
+
 namespace WestWindSystem.BLL
 {
     public class CategoryServices
     {
-        #region Setup of the Context Connection Variable and Class Constructor
+        #region setup of the context connection variable and class constructor
 
-        // variable to hold an instance of context class
+        //variable to hold an instance of context class
         private readonly WestWindContext _context;
 
         //constructor to create an instance of the registered context class
@@ -25,13 +26,16 @@ namespace WestWindSystem.BLL
         }
         #endregion
 
-        #region Queries>
+        #region Query
         public List<Category> Category_List()
         {
             IEnumerable<Category> info = _context.Categories
-                                        .OrderByDescending(x => x.CategoryName;
+                                        .OrderBy(x => x.CategoryName);
             return info.ToList();
+
         }
+
         #endregion
+
     }
 }

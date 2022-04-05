@@ -93,5 +93,10 @@ namespace WebApp.Pages.Samples
             ModelState.Clear();
             return RedirectToPage(new { searcharg = (string?)null });
         }
+
+        public IActionResult OnPostNew()
+        {
+            return RedirectToPage("/Samples/ReceivingPage");
+        }
     }
 }

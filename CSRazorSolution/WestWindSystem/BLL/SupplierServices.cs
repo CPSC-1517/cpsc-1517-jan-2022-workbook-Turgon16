@@ -11,7 +11,7 @@ using WestWindSystem.Entities;
 
 namespace WestWindSystem.BLL
 {
-    internal class SupplierServices
+    public class SupplierServices
     {
         #region Setup of the Context Connection Variable and Class Constructor
 
